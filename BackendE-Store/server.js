@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const connectDB = require('./config/db');
 
-// require('./utils/passport-setup');
 
 
 
@@ -18,10 +17,11 @@ const app = express();
 app.use(express.json());
 
 //routes require
-const userRoute = require('./routes/userRoute')
+const userRoute = require('./routes/userRoute');
+const productRoute = require('./routes/productRoute');
 //routes middlewares
 app.use('/api/v1/user', userRoute)
-
+app.use('/api1/v2/product', productRoute)
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
     console.log(`Server Is Running on ${PORT}`.green.bold);

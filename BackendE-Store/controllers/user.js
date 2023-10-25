@@ -10,7 +10,6 @@ const JWT = require('jsonwebtoken');
 // @ access Public
 exports.registerUser = async (req, res) => {
   try {
-    // const sami = [2, 2]
     //destructure 
     const { name, email, password } = req.body;
     // console.log('here is req.body', req.body);
