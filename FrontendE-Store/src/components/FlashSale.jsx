@@ -1,20 +1,29 @@
-import React from "react";
-import joystick from "../icons/joystick.png";
-import cesar from "../icons/cesar.png";
-import camera from '../icons/camera.png'
-import laptop from '../icons/laptop.png'
-import car from '../icons/car.png'
-import shoes from '../icons/shoes.png'
-import blackjoystick from '../icons/blackjoystick.png'
-import blackcoart from '../icons/blackcoart.png'
-import chair from '../icons/chair.png'
-import keybord from '../icons/keyboard.png'
-import { useNavigate } from "react-router-dom";
-
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { add } from "../myredux/userSlice";
 
 const FlashSale = () => {
-  const navigate = useNavigate();
-  
+  const [product, setProducts] = useState([]);
+  const [message, setMessage] = useState(false);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await fetch("https://fakestoreapi.com/products");
+      const data = await res.json();
+      setProducts(data);
+    };
+    fetchProducts();
+  }, []);
+
+  const dispatch = useDispatch();
+
+  const handleAddClick = (id) => {
+    dispatch(add(id));
+    setMessage(true)
+    setTimeout(() => {
+      setMessage(false)
+    }, 2000);
+  };
+
   return (
     <div>
       {/* Today tag */}
@@ -51,217 +60,53 @@ const FlashSale = () => {
       <div className="pt-[30px]"></div>
       {/* dummy space */}
 
-     {/* main div */}
-     <div className="grid grid-cols-1 gap-6 sm:grid sm:grid-cols-2 mx-[100px] my-5 md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-5">
-        <div className="p-[20px] w-[300px] bg-[#F5F5F5] " >
-          <div className=" p-[30px] ">
-            <img src={cesar} className="w-[100px] mx-auto cursor-pointer" onClick={()=>navigate('/productdetails')}/>
-          </div>
-          <h1 className="font-semibold">Breed Dry Dog Food</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* Camera */}
-        <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={camera} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* Camera */}
-          {/* laptop */}
-          <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={laptop} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* laptop */}
-          {/* Car */}
-          <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={car} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* Car */}
-          {/* shoes */}
-          <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={shoes} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* shoes */}
-         {/* blackjoystick */}
-         <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={blackjoystick} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* blackjoystick */}
-         {/* blackcoart */}
-         <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={blackcoart} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* blackcoart */}
+      {/* main div */}
+      <div className="grid grid-cols-1 gap-6 sm:grid sm:grid-cols-2 mx-[100px] my-5 md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-5">
+        {product.map((items) => {
+          return (
+            <div className="  p-[20px] w-[300px] bg-[#F5F5F5] " key={items.id}>
+              <img
+                src={items.image}
+                className="w-[200px] h-[200px] mx-auto cursor-pointer p-[30px] "
+                onClick={() => navigate("/productdetails")}
+              />
 
-         {/* blackcoart */}
-         <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={joystick} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* blackcoart */}
-         {/* blackcoart */}
-         <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={chair} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* blackcoart */}
-         {/* blackcoart */}
-         <div className="p-[20px] w-[300px] bg-[#F5F5F5] ">
-          <div className=" p-[30px] h-[220px]">
-            <img src={keybord} className="w-[100px] mx-auto" />
-          </div>
-          <h1 className="font-semibold">CANON EOS DSLR Camera</h1>
-          <span className="text-red-600 font-semibold">$120</span>
-          <span className="text-yellow-300">
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="fa-solid fa-star-half-stroke"></i>
-            <i className="text-black">(35)</i>
-          </span>
-          <br></br>
-          <button className="bg-black text-white w-[100%] h-[30px] text-[15px]">
-            Add To Cart
-          </button>
-        </div>
-        {/* blackcoart */}
-       
-        
+              <h1 className="font-semibold">{items.title.slice(0, 20)}...</h1>
+              <span className="text-red-600 font-semibold">{items.price}</span>
+              <span className="text-yellow-300">
+                <i className="fa-solid fa-star-half-stroke"></i>
+                <i className="fa-solid fa-star-half-stroke"></i>
+                <i className="fa-solid fa-star-half-stroke"></i>
+                <i className="fa-solid fa-star-half-stroke"></i>
+                <i className="text-black">(35)</i>
+              </span>
+              <br></br>
+              <button
+                className="bg-black text-white w-[100%] h-[30px] text-[15px]"
+                onClick={() => handleAddClick(items)}
+              >
+                Add To Cart
+              </button>
+            </div>
+          );
+        })}
       </div>
-      
-      <div className="bg-white w-[200px] mx-auto pt-[200px] pb-[0px] mt-[-100px]">
-      <button className="bg-[#DB4444] text-white text-center w-[230px] h-[40px]">View All Products</button>
 
+      <div className="bg-white w-[200px] mx-auto pt-[200px] pb-[0px] mt-[-100px]">
+        <button className="bg-[#DB4444] text-white text-center w-[230px] h-[40px]">
+          View All Products
+        </button>
       </div>
       <hr></hr>
-      <br/>
+      <br />
+      {message && (
+        <div
+          className="fixed top-0 p-4 w-[100%] text-center mx-auto h-auto text-md bg-green-500 rounded-lg text-white dark:bg-gray-800 dark:text-blue-400"
+          role="alert"
+        >
+          <strong className=" text-center font-semibold">Products is Added to the Cart</strong> 
+        </div>
+      )}
     </div>
   );
 };
