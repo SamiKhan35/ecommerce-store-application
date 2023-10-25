@@ -3,8 +3,17 @@ import Navbar from "./Navbar";
 import lcd from "../icons/lcd.png";
 import { NavLink } from "react-router-dom";
 import Footer from "./Footer";
+import { useSelector, useDispatch } from "react-redux";
+import { remove } from "../myredux/userSlice";
 
 const Cart = () => {
+  const selector = useSelector((state) => state.eCart);
+  const dispatch = useDispatch();
+
+
+  const handleRemove=(itemsOne)=>{
+    dispatch(remove(itemsOne))
+  }
   return (
     <div>
       <Navbar />
@@ -12,52 +21,45 @@ const Cart = () => {
         <table className=" bg-white border border-gray-300 ">
           <thead>
             <tr>
-              <th className="py-2 px-4 border-b">Product/ID</th>
-              <th className="py-2 px-4 border-b">Price</th>
+              <th className="py-2 px-4 border-b">P/ID</th>
+              <th className="py-2 px-4 border-b">Title</th>
               <th className="py-2 px-4 border-b">Quantity</th>
-              <th className="py-2 px-4 border-b">Total</th>
+              <th className="py-2 px-4 border-b">Price</th>
+              <th className="py-2 px-4 border-b"></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="py-2  border-b flex">
-                <img src={lcd} className="w-[50px] h-[30px] mx-1" />
-                1. LCD
-              </td>
-              <td className="py-2 border-b">$25</td>
-              <td className="py-2 border-b">
-                <input type="number" placeholder="Quantity" className="text-center" />
-              </td>
-              <td className="py-2  border-b">$25</td>
-            </tr>
-            <tr>
-              <td className="py-2  border-b flex">
-                <img src={lcd} className="w-[50px] h-[30px] mx-1" />
-                1. LCD
-              </td>
-              <td className="py-2  border-b">$30</td>
-              <td className="py-2  border-b">
-                <input
-                  type="number"
-                  placeholder="Quantity"
-                  className="text-center"
-                />
-              </td>
-            
-              <td className="py-2  border-b">$30</td>
-            </tr>
-            <tr>
-              <td className="py-2  border-b flex">
-                <img src={lcd} className="w-[50px] h-[30px] mx-1" />
-                1. LCD
-              </td>
-              <td className="py-2  border-b">$35</td>
-              <td className="py-2  border-b">
-                <input type="number" placeholder="Quantity" className="text-center" />
-              </td>
-             
-              <td className="py-2  border-b">$25</td>
-            </tr>
+            {selector.map((itemsOne) => {
+              return (
+                <tr key={itemsOne.id}>
+                  <td className="py-2  border-b flex">
+                    <img
+                      src={itemsOne.image}
+                      className="w-[100px] h-[100px] mx-1"
+                    />
+                  </td>
+                  <td>
+                    {itemsOne.title.slice(0, 10)}
+
+                  </td>
+                 
+                  <td className="py-2 border-b">
+                    <input
+                      type="number"
+                      placeholder="Quantity"
+                      className="text-center"
+                    />
+                  </td>
+                  <td className="py-2 border-b">{itemsOne.price}</td>
+                 
+                  <td>
+                    <button className="bg-[#DB4444] text-[15px] relative  text-white text-center w-[230px] h-[40px] sm:mx-3" onClick={()=>handleRemove(itemsOne.id)}>
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         {/* Buttons */}

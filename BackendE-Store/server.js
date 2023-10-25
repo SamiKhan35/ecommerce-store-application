@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 
 
@@ -15,7 +16,7 @@ const app = express();
 
 // Use express.json() middleware to parse JSON data
 app.use(express.json());
-
+app.use(cors())
 //routes require
 const userRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute');
@@ -26,3 +27,4 @@ const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
     console.log(`Server Is Running on ${PORT}`.green.bold);
 });
+
