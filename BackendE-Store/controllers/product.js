@@ -7,7 +7,7 @@ const { multerImage } = require('../utils/multerConfig'); // multer middleware
 exports.createProduct = async (req, res, next) => {
     try {
         // Handle the file upload with Multer
-        multerImage.single('image')(req, res, async function (err) {
+        multerImage.array('image', 5)(req, res, async function (err) {
             if (err) {
                 console.log('Error uploading image:', err);
                 return res.status(500).send({
@@ -17,7 +17,7 @@ exports.createProduct = async (req, res, next) => {
                 });
             }
             // Check if req.file exists before accessing its properties
-            if (!req.file) {
+            if (!req.files || req.files.length === 0) {
                 return res.status(400).json({
                     success: false,
                     message: 'No file uploaded'
@@ -25,11 +25,11 @@ exports.createProduct = async (req, res, next) => {
             }
 
             // Once the file upload is complete, log the file data
-            console.log('Request File:', req.file);
+            console.log('Request File:', req.files);
 
             // Access the file data and other fields after the file has been uploaded
             const { title, description, size, color, price } = req.body;
-            const image = req.file.originalname; // Correct the way to access the filename
+            const image = req.files.map(file => file.originalname); // Correct the way to access the filename
 
             const newProduct = new ProductModel({
                 title,
@@ -38,6 +38,7 @@ exports.createProduct = async (req, res, next) => {
                 color,
                 price,
                 image,
+
             });
 
             const saveProduct = await newProduct.save();

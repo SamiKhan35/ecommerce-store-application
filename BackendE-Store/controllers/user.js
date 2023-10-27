@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const userModel = require('../models/User');
 const { hashPassword, comparePassword } = require('../utils/passwordUtils');
 const JWT = require('jsonwebtoken');
@@ -8,10 +9,12 @@ const JWT = require('jsonwebtoken');
 // @ desc Register User
 // @ route POST/api/v1/creatuser
 // @ access Public
-exports.registerUser = async (req, res) => {
+exports.registerUser = async (req, res, next) => {
   try {
+
     //destructure 
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
+
     // console.log('here is req.body', req.body);
     //validation
     if (!name || !email || !password) {
@@ -20,7 +23,7 @@ exports.registerUser = async (req, res) => {
     //check if the user already exists
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return  res.status(409).json({
+      return res.status(409).json({
         success: false,
         message: 'User already Existed, please Login',
       });
@@ -29,7 +32,7 @@ exports.registerUser = async (req, res) => {
     const hashedPass = await hashPassword(password);
     //create a new user
     const newUser = await userModel.create({
-      name, email, password: hashedPass
+      name, email, password: hashedPass, role: role
     });
 
     res.status(201).json({
@@ -52,7 +55,7 @@ exports.registerUser = async (req, res) => {
 // @ desc Login User
 // @ desc route POST/api/v1/loginuser
 // @ desc access Public 
-exports.loginUser = async (req, res) => {
+exports.loginUser = async (req, res, next) => {
   try {
     // destructure
     const { email, password } = req.body;
@@ -115,3 +118,10 @@ exports.loginUser = async (req, res) => {
   }
 }
 
+exports.getMe = async (req, res, next) => {
+  const user = await userModel.findById(req.user.id);
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+}

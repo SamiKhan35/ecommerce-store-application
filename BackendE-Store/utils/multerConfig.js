@@ -1,7 +1,5 @@
 const multer = require('multer');
-const path = require('path');
-
-
+const path = require("path");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -11,11 +9,12 @@ const storage = multer.diskStorage({
 
     },
     filename: function (req, file, cb) {
+        req.filename = `${Date.now()}-${file.originalname}`;
 
-        const uniqueSuffix = Date.now();
-        const extension = path.extname(file.originalname);
-        const filename = file.fieldname + '-' + uniqueSuffix + extension;
-        cb(null, filename);
+        // const uniqueSuffix = Date.now();
+        // const extension = path.extname(file.originalname);
+        // const filename = file.fieldname + '-' + uniqueSuffix + extension;
+        cb(null, req.filename);
 
 
     }

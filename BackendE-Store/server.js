@@ -3,8 +3,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const connectDB = require('./config/db');
 const cors = require('cors');
-
-
+const path = require('path');
 
 
 //load dotenv 
@@ -16,7 +15,8 @@ const app = express();
 
 // Use express.json() middleware to parse JSON data
 app.use(express.json());
-app.use(cors())
+app.use(cors());
+app.use("/Image", express.static(path.join(__dirname, "Image")))
 //routes require
 const userRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute');
