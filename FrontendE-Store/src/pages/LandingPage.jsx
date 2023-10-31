@@ -18,6 +18,7 @@ import EditProfile from "../components/EditProfile";
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import ProductDetails from "../components/ProductDetails";
+import Store from "../components/Store";
 
 const LandingPage = () => {
   return (
@@ -42,7 +43,8 @@ const LandingPage = () => {
           <Route path="/editprofile" element={<EditProfile />}></Route>
           <Route path="/aboutus" element={<AboutUs />}></Route>
           <Route path="/contactus" element={<ContactUs />}></Route>
-          <Route path="/productdetails" element={<ProductDetails />}></Route>
+          <Route path="/productdetails/:id" element={<ProductDetails />}></Route>
+          <Route path="/store" element={<Store />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

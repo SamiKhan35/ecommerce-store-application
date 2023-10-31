@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Cart from "./Cart";
+import { Typewriter } from "react-simple-typewriter";
 
 const Navbar = () => {
   const [isOpen, setisOpen] = useState(false);
-  const select = useSelector((state)=> state.eCart)
+  const select = useSelector((state) => state.eCart.productsCart);
 
   let timeOut;
 
@@ -22,17 +22,39 @@ const Navbar = () => {
     <div>
       {/* Upper Black Navbar */}
       <div className="flex bg-black flex-col items-center p-2   w-[100%] h-auto sm:flex sm:flex-row md:pl-11 md:text-2xl lg:pl-[100px] lg:text-2xl 2xl:pl-[300px]">
-        <span className=" text-white">
-          Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
+       <div className="w-[100%]">
+         <span className=" text-white">
+          {
+            <div>
+              <h1 style={{ fontWeight: "normal" }}>
+                {" "}
+                <span style={{ color: "white", fontWeight: "bold" }}>
+                  {/* Style will be inherited from the parent element */}
+                  <Typewriter
+                    words={[
+                      " Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!",
+                    ]}
+                    loop={5}
+                    cursor
+                    cursorStyle="_"
+                    typeSpeed={20}
+                    deleteSpeed={50}
+                    delaySpeed={1000}
+                  />
+                </span>
+              </h1>
+            </div>
+          }
         </span>
-        <div className="flex md:flex-nowrap lg:pl-[200px]">
+       </div>
+       
+        <div className=" flex flex-row  float-right md:flex-nowrap lg:pl-[200px]">
           <Link to={"/cart"}>
-            <button className="bg-black text-white w-[100%] h-[30px] text-[20px]">
+            <button className="bg-black text-white w-[100%] mr-[70px] h-[30px] text-[20px]">
               Shop Now
             </button>
           </Link>
-        </div>
-        <div className="pl-[10px]">
+
           <select className="bg-black text-white cursor-pointer outline-none text-[20px]">
             <option>English</option>
             <option>Urdu</option>
@@ -41,6 +63,7 @@ const Navbar = () => {
           </select>
         </div>
       </div>
+      
       {/* Upper Black Navbar */}
       {/* Lower White Navbar */}
 
@@ -81,7 +104,6 @@ const Navbar = () => {
           </p>
 
           {/* badges */}
-          
         </Link>
         <i
           className="fa-solid fa-xl fa-arrow-right-to-bracket mx-[10px] cursor-pointer mt-[20px] text-red-400 rounded-full hover:underline"

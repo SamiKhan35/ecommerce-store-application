@@ -1,19 +1,27 @@
 import React from "react";
 import Navbar from "./Navbar";
-import lcd from "../icons/lcd.png";
 import { NavLink } from "react-router-dom";
 import Footer from "./Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { remove } from "../myredux/userSlice";
+import { remove, increaseQuantity, calculatingTotal, DecQuantity } from "../myredux/userSlice";
 
 const Cart = () => {
-  const selector = useSelector((state) => state.eCart);
+  const selector = useSelector((state) => state.eCart.productsCart);
+  const quantity = useSelector((state) => state.eCart.totalQuantity);
+  const totalPrice = useSelector((state) => state.eCart.subTotal);
   const dispatch = useDispatch();
+  
+  dispatch(calculatingTotal())
+  const handleIncrase = (id) => {
+    dispatch(increaseQuantity(id));
+  };
+  const handleDecQuantity = (id)=>{
+    dispatch(DecQuantity(id))
 
-
-  const handleRemove=(itemsOne)=>{
-    dispatch(remove(itemsOne))
   }
+  const handleRemove = (id) => {
+    dispatch(remove(id));
+  };
   return (
     <div>
       <Navbar />
@@ -23,43 +31,59 @@ const Cart = () => {
             <tr>
               <th className="py-2 px-4 border-b">P/ID</th>
               <th className="py-2 px-4 border-b">Title</th>
-              <th className="py-2 px-4 border-b">Quantity</th>
               <th className="py-2 px-4 border-b">Price</th>
-              <th className="py-2 px-4 border-b"></th>
+              <th className="py-2 px-4 border-b">Quantity</th>
+              <th className="py-2 px-4 border-b">Total</th>
             </tr>
           </thead>
           <tbody>
-            {selector.map((itemsOne) => {
-              return (
-                <tr key={itemsOne.id}>
-                  <td className="py-2  border-b flex">
-                    <img
-                      src={itemsOne.image}
-                      className="w-[100px] h-[100px] mx-1"
-                    />
-                  </td>
-                  <td>
-                    {itemsOne.title.slice(0, 10)}
+            <div className="my-[50px] pl-[50px]  w-[200%]">
+              {selector.length === 0 ? (
+                <div className="text-2xl mx-auto">
+                  <h1>Your Cart is Empty</h1>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+            {selector &&
+              selector.map((items) => {
+                return (
+                  <tr key={items.id}>
+                    <td className="py-2  border-b flex">
+                      <img
+                        src={`http://localhost:4000/Image/${items.image[0]}`}
+                        className="w-[100px] h-[100px] mx-1"
+                      />
+                    </td>
+                    <td>{items.title.slice(0, 8)}...</td>
+                    <td className="py-2 border-b">${items.price}</td>
+                    <td className="py-2 border-b">
+                      <div className="flex flex-row border-2 text-center m-3">
+                        <button
+                          className=" text-2xl"
+                          onClick={() => handleIncrase(items.id)}
+                        >
+                          +
+                        </button>
+                        <div className=" w-[100%]">{quantity}</div>
 
-                  </td>
-                 
-                  <td className="py-2 border-b">
-                    <input
-                      type="number"
-                      placeholder="Quantity"
-                      className="text-center"
-                    />
-                  </td>
-                  <td className="py-2 border-b">{itemsOne.price}</td>
-                 
-                  <td>
-                    <button className="bg-[#DB4444] text-[15px] relative  text-white text-center w-[230px] h-[40px] sm:mx-3" onClick={()=>handleRemove(itemsOne.id)}>
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                        <button className="text-3xl float-right" onClick={()=>handleDecQuantity(items.id)}>-</button>
+                      </div>
+                    </td>
+
+                    <td>${items.price * quantity}</td>
+                    <td>
+                      <button
+                        className="bg-[#DB4444] text-[15px] relative  text-white text-center w-auto h-[40px] sm:mx-3"
+                        onClick={() => handleRemove(items.id)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
         {/* Buttons */}
@@ -81,15 +105,15 @@ const Cart = () => {
         <h1 className="text-2xl">Cart Total:</h1>
         <div className="border-b-2 w-[300px] mt-2">
           <span>SubTotal</span>
-          <span className="float-right">$30</span>
+          <span className="float-right font-semibold">${totalPrice}</span>
         </div>
         <div className="border-b-2 w-[300px] mt-2">
           <span>Shipping</span>
-          <span className="float-right">Free</span>
+          <span className="float-right font-semibold">Free</span>
         </div>
         <div className="w-[300px] mt-2">
           <span>Total</span>
-          <span className="float-right">$30</span>
+          <span className="float-right font-semibold">${totalPrice}</span>
         </div>
 
         <NavLink to={"/checkout"}>

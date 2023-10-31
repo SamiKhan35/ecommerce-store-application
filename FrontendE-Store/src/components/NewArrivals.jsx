@@ -1,5 +1,4 @@
 import React from "react";
-import speakers from "../icons/speakers.png";
 import shortspeakers from "../icons/shortspeakers.png";
 import perfumes from "../icons/perfumes.png";
 

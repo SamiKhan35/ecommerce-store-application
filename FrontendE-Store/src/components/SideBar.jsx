@@ -2,7 +2,7 @@ import React from "react";
 import iphonlogo from "../icons/iphonlogo.png";
 import iphonefourteen from "../icons/iphonfourteen.png";
 import { Link } from "react-router-dom";
-
+import { Typewriter } from 'react-simple-typewriter'
 const SideBar = () => {
   return (
     <div>
@@ -10,9 +10,11 @@ const SideBar = () => {
       {/* side bar main div*/}
       <div className="grid grid-cols-1 md:grid md:grid-cols-2 lg:grid-cols-5">
         {/* side bar contents */}
-        <div className="grid grid-cols-2 gap-3 pt-5 text-[20px] font-semibold underline justify-start
+        <div
+          className="grid grid-cols-2 gap-3 pt-5 text-[20px] font-semibold underline justify-start
         md:grid md:grid-cols-1 md:no-underline lg:gap-2 lg:grid lg:grid-cols-1 text-start lg:text-[15px]
-        ">
+        "
+        >
           <button>
             Mens Fashions <i className="fa-solid fa-sm fa-chevron-right " />
           </button>
@@ -40,20 +42,40 @@ const SideBar = () => {
               </h1>
             </div>
             <h1 className="pl-[140px] pt-14 text-3xl pb-8 ">
-              Up to 10% off Voucher
+              <h1
+                style={{
+                  fontWeight: "normal",
+                }}
+              >
+                {" "}
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                 
+                  <Typewriter
+                    words={["Upto 10%", "Discount", "Shop Now"]}
+                    loop={5}
+                    cursor
+                   
+                    typeSpeed={70}
+                    deleteSpeed={50}
+                    delaySpeed={1000}
+                   
+                  />
+                </span>
+              </h1>
             </h1>
-            <Link to={'/cart'}>
-            <button className="pl-[140px] underline font-bold text-2xl pb-6">
-              Shop Now <i className="fa-solid fa-arrow-right pl-[10px]"></i>
-            </button>
-            
+            <Link to={"/cart"}>
+              <button className="pl-[140px] underline font-bold text-2xl pb-6">
+                Shop Now <i className="fa-solid fa-arrow-right pl-[10px]"></i>
+              </button>
             </Link>
-
           </div>
           {/* image conents ended */}
           {/* image */}
           <div className="md:grid md:grid-cols-1 ">
-            <img src={iphonefourteen} className="w-[100%] lg:col-span-3 lg:h-[360px]"  />
+            <img
+              src={iphonefourteen}
+              className="w-[100%] lg:col-span-3 lg:h-[360px]"
+            />
           </div>
           {/* image ended */}
         </div>

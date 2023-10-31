@@ -70,13 +70,13 @@ const SignUp = () => {
             onSubmit={handleSubmit}
           >
              {/* Toaster Message */}
-      {toast && (
-        <div className="relative w-[60%] bg-green-500 text-white p-3 rounded shadow text-center">
-          <h1>Your are Registered</h1>
-        </div>
-      )}
+            {toast && (
+              <div className="relative w-[60%] bg-green-500 text-white p-3 rounded shadow text-center">
+                <h1>Your are Registered</h1>
+              </div>
+            )}
 
-      {/* Toaster Message ended */}
+             {/* Toaster Message ended */}
             <h1 className="text-3xl font-bold mb-3">Create an Account</h1>
             <h1 className="font-semibold mb-3">Enter your details below</h1>
             {/* <label>Name</label> */}

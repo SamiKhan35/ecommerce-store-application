@@ -45,7 +45,7 @@ const Admin = () => {
             <span className="icon">
               <ion-icon name="chatbubble-outline" />
             </span>
-            <Link to={'/'}>
+            <Link to={'/store'}>
             <span className="title">Navigate To Store</span>
 
             </Link>
