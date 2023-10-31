@@ -1,10 +1,9 @@
-const User = require('../models/User');
+// const User = require('../models/User');
 const userModel = require('../models/User');
 const { hashPassword, comparePassword } = require('../utils/passwordUtils');
 const JWT = require('jsonwebtoken');
-
-
-
+const sendMail = require('../utils/email');
+const crypto = require('crypto');
 
 // @ desc Register User
 // @ route POST/api/v1/creatuser
@@ -117,11 +116,107 @@ exports.loginUser = async (req, res, next) => {
     });
   }
 }
-
+// @ desc Particular User
+// @ desc route GET/api/v1/getme
+// @ desc access Private
 exports.getMe = async (req, res, next) => {
   const user = await userModel.findById(req.user.id);
   res.status(200).json({
     success: true,
     data: user,
   });
+}
+// @ desc Password User
+// @ desc route POST/api/v1/forgotpassword
+// @ desc access Public 
+exports.forgotPwd = async (req, res, next) => {
+  try {
+    // 1. Get User Based on Email
+    const user = await userModel.findOne({ email: req.body.email });
+    console.log('forgot password user email is', user);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: " User not Found",
+        error: error.message,
+      });
+    }
+    // 2. Generate Random Token 
+    const newToken = await user.getResetPasswordToken(); // Generate a reset token
+    console.log('here is your new TOken', newToken)
+    await user.save({ validateBeforeSave: false }); // Save the token and user
+    
+    // Create the reset URL
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/user/forgotpassword/${newToken}`;
+    
+    // Compose the email message
+    const message = `We have received a password reset request. Please use the following link to reset your password:\n\n${resetUrl}\n\nThis reset password link is valid for 10 minutes.`;
+    
+    // Send the email with the reset link
+    await sendMail({
+      email: user.email,
+      subject: 'Password Change Request',
+      message: message,
+    });
+    
+    // Respond with a success message
+    res.status(200).json({
+      status: 'success',
+      message: 'Password reset link sent to the user email successfully.',
+    });
+    
+
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+}
+// @ desc Reset Password User
+// @ desc route PUt/api/v1/resetpassword
+// @ desc access Public 
+exports.resetPwd = async (req, res, next) =>{
+  try{
+    //if user exist with the given token and token has not expired
+    const token = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    const userfound = await userModel.findOne({resetPasswordToken:token});
+    if(!userfound){
+      return res.status(404).json({
+        success: false,
+        message: "Token Is Invalid and Expire",
+        });
+      }
+      // resetting the password
+      const newpassword = req.body.password;
+      const hashedPassword = await hashPassword(newpassword);
+      userfound.password = hashedPassword;
+      userfound.resetPasswordToken = undefined;
+      await userfound.save();
+
+      // Generate a new Login With token
+      const loginwithtoken = await JWT.sign({_id :userfound._id}, process.env.JWT_SECRET,{
+        "expiresIn": "1d",
+      });
+      res.status(200).send({
+        success: true,
+        message: 'Password Reset Successfully. Please login again',
+        userFound: {
+            name: userfound.name,
+            email: userfound.email,
+            phone: userfound.phone,
+            address: userfound.address,
+        },
+        token: loginwithtoken,
+    });
+
+  }
+  catch(error){
+    res.status(404).json({
+      success: false,
+      message:"Internal Server Error",
+      error: error.message,
+    });
+  }
 }

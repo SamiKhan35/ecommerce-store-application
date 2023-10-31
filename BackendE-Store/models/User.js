@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto');
+// const { reset } = require('nodemon');
 // const joi = require('joi');
+
+
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -27,6 +31,8 @@ const UserSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
 });
 
 // const userValidation = async (data) => {
@@ -40,6 +46,17 @@ const UserSchema = new mongoose.Schema({
 // const res = await UserSchema.validateAsync(data);
 // return res;
 
+UserSchema.methods.getResetPasswordToken = async function() {
+    // Generate and set the reset token and expiration time here
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    
+    this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    
+    // Set the expiration time
+    this.resetPasswordExpire = Date.now() + 3600000; // 10 minutes in milliseconds
+
+    return resetToken;
+};
 
 module.exports = mongoose.model('User', UserSchema);
 // module.exports.schema = userValidation;
